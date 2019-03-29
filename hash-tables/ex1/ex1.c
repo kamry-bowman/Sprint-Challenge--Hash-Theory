@@ -3,13 +3,34 @@
 #include "hashtable.h"
 #include "ex1.h"
 
+// HashTable *create_hash_table(int capacity);
+// void hash_table_insert(HashTable *ht, int key, int value);
+// void hash_table_remove(HashTable *ht, int key);
+// int hash_table_retrieve(HashTable *ht, int key);
+// void destroy_hash_table(HashTable *ht);
+// HashTable *hash_table_resize(HashTable *ht);
+
+
 Answer *get_indices_of_item_weights(int *weights, int length, int limit)
 {
   HashTable *ht = create_hash_table(16);
+  Answer *answer = calloc(1, sizeof(Answer *));
 
-  // YOUR CODE HERE
-
-  return NULL;
+  for (int i = 0; i < length; i++) {
+    int rem_space = limit - weights[i];
+    int matching_index = hash_table_retrieve(ht, rem_space);
+    if (matching_index != -1) {
+      // found a match
+      if (weights[i] > rem_space) {
+        answer->index_1 = i;
+        answer->index_2 = matching_index;
+      } else {
+        answer->index_1 = matching_index;
+        answer->index_2 = i;
+      }
+    }
+  }
+  return answer;
 }
 
 void print_answer(Answer *answer)
